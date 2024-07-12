@@ -2,18 +2,31 @@ let firstNumber = 0;
 let secondNumber = 0;
 let operator;
 
-add = function(a, b){
-    return a + b;
+add = function(num1, num2){
+    return num1 + num2;
 };
 
-subtract = function(a, b){
-    return a - b;
+subtract = function(num1, num2){
+    return num1 - num2;
 };
 
-multiply = function(a, b){
-    return a * b;
+multiply = function(num1, num2){
+    return num1 * num2;
 };
 
-divide = function(a, b){
-    return a / b;
+divide = function(num1, num2){
+    return num1 / num2;
 };
+
+operate = function(num1, operator, num2){
+    switch (operator){
+        case "+":
+            return add(num1, num2);
+        case "-":
+            return subtract(num1, num2);
+        case "*":
+            return multiply(num1, num2);
+        case "/":
+            return divide(num1, num2);
+    }
+}
