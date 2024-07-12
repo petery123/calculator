@@ -1,6 +1,43 @@
-let firstNumber = 0;
-let secondNumber = 0;
-let operator;
+let firstNumber = "";
+let secondNumber = "";
+let operator = "";
+
+const display = document.querySelector("#display");
+const buttons = document.querySelector(".buttons");
+const operatorBtns = document.querySelectorAll(".operator");
+const numberBtns = document.querySelectorAll(".number");
+const equalsBtn = document.querySelector("#equal");
+
+numberBtns.forEach((button) => button.addEventListener("click", handleNumberInput));
+operatorBtns.forEach((button) => button.addEventListener("click", handleOperatorInput));
+equalsBtn.addEventListener("click", handleEquals);
+
+function handleOperatorInput(event){
+    if (firstNumber !== "" && secondNumber === ""){
+        if (operator !== ""){
+            operator = event.target.id;
+            display.textContent = operator;
+        }
+        operator = event.target.id;
+        display.textContent += ` ${operator} `;
+    }
+}
+
+function handleNumberInput(event){
+    if (operator === ""){
+        firstNumber += event.target.id; 
+        display.textContent += event.target.id;
+    }else{
+        secondNumber += event.target.id;
+        display.textContent += event.target.id;
+    }
+};
+
+function handleEquals(event){
+    if (firstNumber !== "" && secondNumber !== "" && operator !== ""){
+        display.textContent = operate(+firstNumber, operator, +secondNumber);
+    }
+}
 
 add = function(num1, num2){
     return num1 + num2;
