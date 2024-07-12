@@ -30,7 +30,7 @@ function handleOperatorInput(event){
     if (!equationData.contains("num1") && event.target.textContent == "-" && !equationData.contains("operator")){ //handle entry of negative number at the start
         equationData.num1 = "-"; 
         display.textContent = equationData.num1;
-    }else if (equationData.contains("operator") && (equationData.operator === "*" || equationData.operator === "/") && (!equationData.contains("num2"))){
+    }else if (equationData.contains("operator") && (equationData.operator === "*" || equationData.operator === "/") && (!equationData.contains("num2")) && event.target.textContent == "-"){
         equationData.num2 = "-"; 
         display.textContent += equationData.num2;
     }else if (equationData.contains("num1") && equationData.num1 !== "-" && !equationData.contains("num2")){ //handle change of sign
