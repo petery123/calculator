@@ -2,7 +2,7 @@ let equationData = {
     num1: "", 
     num2: "", 
     operator: "",
-    valuePresent: function(property){
+    contains: function(property){
         return this[property] !== "";
     }
 };
@@ -25,18 +25,23 @@ deleteBtn.addEventListener("click", backSpace);
 decimalBtn.addEventListener("click", addDecimal);
 
 function handleOperatorInput(event){
-    if (equationData.valuePresent("num1") && !equationData.valuePresent("num2")){
-        if (equationData.valuePresent("operator")){
-            equationData.operator= event.target.id;
-            display.textContent = equationData.operator;
+    if (!equationData.contains("num1") && event.target.id == "-" && !equationData.contains("operator")){ //handle entry of negative number at the start
+        equationData.num1 = "-"; 
+        display.textContent = equationData.num1;
+    }else if (equationData.contains("operator") && (equationData.operator === "*" || equationData.operator === "/") && (!equationData.contains("num2"))){
+        equationData.num2 = "-"; 
+        display.textContent += equationData.num2;
+    }else if (equationData.contains("num1") && equationData.num1 !== "-" && !equationData.contains("num2")){ //handle change of sign
+        if (equationData.contains("operator")){
+            backSpace();
         }
-        equationData.operator= event.target.id;
+        equationData.operator = event.target.id;
         display.textContent += ` ${equationData.operator} `;
     }
 }
 
 function handleNumberInput(event){
-    if (!equationData.valuePresent("operator")){
+    if (!equationData.contains("operator")){
         equationData.num1 += event.target.id; 
         display.textContent = equationData.num1;
     }else{
@@ -46,7 +51,7 @@ function handleNumberInput(event){
 };
 
 function handleEquals(){
-    if (equationData.valuePresent("num1") && equationData.valuePresent("num2") && equationData.valuePresent("operator")){
+    if (equationData.contains("num1") && equationData.contains("num2") && equationData.contains("operator")){
         display.textContent = operate(+equationData.num1, equationData.operator, +equationData.num2);
         if (display.textContent === "ERROR"){
             equationData.num1 = "";
@@ -59,11 +64,11 @@ function handleEquals(){
 }
 
 function backSpace(){
-    if (equationData.valuePresent("operator") && !equationData.valuePresent("num2")){
+    if (equationData.contains("operator") && !equationData.contains("num2")){
         display.textContent = display.textContent.slice(0, (display.textContent.length-3)); // specifically for removing operator (when there is a number and there is an operator)
-    }else if(equationData.valuePresent("num2") && equationData.num2.split("").includes("e")){ //checks if in exponential form
+    }else if(equationData.contains("num2") && equationData.num2.split("").includes("e")){ //checks if in exponential form
         display.textContent = display.textContent.slice(0, display.textContent.length - equationData.num2.length);
-    }else if (display.textContent === "" || (equationData.valuePresent("num1") && equationData.num1.split("").includes("e"))){
+    }else if (display.textContent === "" || (equationData.contains("num1") && equationData.num1.split("").includes("e"))){
         display.textContent = "";
         equationData = replaceData();
         return;
@@ -75,11 +80,11 @@ function backSpace(){
 
 
 function handlePercent(){
-    if (equationData.valuePresent("num1") && !equationData.valuePresent("operator")){
+    if (equationData.contains("num1") && !equationData.contains("operator") && equationData.num1 !== "-"){
         equationData.num1 = String(divide(+equationData.num1, 100));
         display.textContent = equationData.num1;
     }
-    if (equationData.valuePresent("operator") && equationData.valuePresent("num2")){
+    if (equationData.contains("operator") && equationData.contains("num2")){
         equationData.num2 = String(divide(+equationData.num2, 100));
         display.textContent = display.textContent.slice(0, (equationData.num1.length + 3)); //3 is the length of " [operator] "
         display.textContent += equationData.num2;
@@ -88,10 +93,10 @@ function handlePercent(){
 }
 
 function addDecimal(event){
-    if (!equationData.valuePresent("operator") && !equationData.num1.split("").includes(".")){
+    if (!equationData.contains("operator") && !equationData.num1.split("").includes(".")){
         display.textContent += ".";
         equationData.num1 += ".";
-    }else if (equationData.valuePresent("operator") && !equationData.num2.split("").includes(".")){
+    }else if (equationData.contains("operator") && !equationData.num2.split("").includes(".")){
         display.textContent += ".";
         equationData.num2 += ".";
     }
@@ -109,7 +114,7 @@ function replaceData(a = "", b = "", c = ""){
         num1: a, 
         num2: c, 
         operator: b,
-        valuePresent: function(property){
+        contains: function(property){
             return this[property] !== "";
         }
     };
