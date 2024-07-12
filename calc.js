@@ -3,14 +3,15 @@ let secondNumber = "";
 let operator = "";
 
 const display = document.querySelector("#display");
-const buttons = document.querySelector(".buttons");
 const operatorBtns = document.querySelectorAll(".operator");
 const numberBtns = document.querySelectorAll(".number");
 const equalsBtn = document.querySelector("#equal");
+const percentBtn = document.querySelector("#percent");
 
 numberBtns.forEach((button) => button.addEventListener("click", handleNumberInput));
 operatorBtns.forEach((button) => button.addEventListener("click", handleOperatorInput));
 equalsBtn.addEventListener("click", handleEquals);
+percentBtn.addEventListener("click", handlePercent);
 
 function handleOperatorInput(event){
     if (firstNumber !== "" && secondNumber === ""){
@@ -43,6 +44,19 @@ function handleEquals(event){
         }
         secondNumber = "";
         operator = "";
+    }
+}
+
+function handlePercent(event){
+    if (firstNumber !== "" && operator === ""){
+        firstNumber = String(divide(+firstNumber, 100));
+        display.textContent = firstNumber;
+    }
+    if (operator !== "" && secondNumber !== ""){
+        secondNumber = String(divide(+secondNumber, 100));
+        display.textContent = display.textContent.slice(0, (firstNumber.length + 3)); //3 is the length of " [operator] "
+        display.textContent += secondNumber;
+        
     }
 }
 
