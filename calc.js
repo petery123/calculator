@@ -26,7 +26,7 @@ function handleOperatorInput(event){
 function handleNumberInput(event){
     if (operator === ""){
         firstNumber += event.target.id; 
-        display.textContent += event.target.id;
+        display.textContent = firstNumber;
     }else{
         secondNumber += event.target.id;
         display.textContent += event.target.id;
@@ -36,6 +36,13 @@ function handleNumberInput(event){
 function handleEquals(event){
     if (firstNumber !== "" && secondNumber !== "" && operator !== ""){
         display.textContent = operate(+firstNumber, operator, +secondNumber);
+        if (display.textContent === "ERROR"){
+            firstNumber = "";
+        }else{
+            firstNumber = display.textContent;
+        }
+        secondNumber = "";
+        operator = "";
     }
 }
 
@@ -52,6 +59,9 @@ multiply = function(num1, num2){
 };
 
 divide = function(num1, num2){
+    if (num2 === 0){
+        return "ERROR";
+    }
     return num1 / num2;
 };
 
