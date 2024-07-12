@@ -12,24 +12,24 @@ body{
 }
 
 .calculator{
-    outline: auto;
-    height: 300px;
-    width: 250px;
+    height: 400px;
+    width: 300px;
+    padding: 20px;
+    padding-top: 40px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    background-color: pink;
 }
 
 #display{
-    height: 30px;
+    height: 40px;
     width: 100%;
-    outline: 3px solid red;
+    border: 2px solid red;
 }
 
 button{
-    height: 30px;
     flex: 1;
-    
 }
 
 #equal{
@@ -38,4 +38,13 @@ button{
 
 .row{
     display: flex;
+    flex: 1;
+    gap: 2px;
+}
+
+.buttons{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }

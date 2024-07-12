@@ -113,7 +113,6 @@ function handleKeyboard(event){
         ["/", "divide"],
         [".", "decimal"],
         ["=", "equal"],
-        ["Enter", "equal"],
         ["%", "percent"],
         ["Backspace", "backspace"],
         ["Delete", "delete"]
