@@ -12,20 +12,22 @@ const operatorBtns = document.querySelectorAll(".operator");
 const numberBtns = document.querySelectorAll(".number");
 const equalsBtn = document.querySelector("#equal");
 const percentBtn = document.querySelector("#percent");
-const clearBtn = document.querySelector("#clear");
 const deleteBtn = document.querySelector("#delete");
+const backSpaceBtn = document.querySelector("#backspace");
 const decimalBtn = document.querySelector("#decimal");
 
 numberBtns.forEach((button) => button.addEventListener("click", handleNumberInput));
 operatorBtns.forEach((button) => button.addEventListener("click", handleOperatorInput));
 equalsBtn.addEventListener("click", handleEquals);
 percentBtn.addEventListener("click", handlePercent);
-clearBtn.addEventListener("click", clear);
-deleteBtn.addEventListener("click", backSpace);
+deleteBtn.addEventListener("click", clear);
+backSpaceBtn.addEventListener("click", backSpace);
 decimalBtn.addEventListener("click", addDecimal);
 
+document.addEventListener("keydown", handleKeyboard);
+
 function handleOperatorInput(event){
-    if (!equationData.contains("num1") && event.target.id == "-" && !equationData.contains("operator")){ //handle entry of negative number at the start
+    if (!equationData.contains("num1") && event.target.textContent == "-" && !equationData.contains("operator")){ //handle entry of negative number at the start
         equationData.num1 = "-"; 
         display.textContent = equationData.num1;
     }else if (equationData.contains("operator") && (equationData.operator === "*" || equationData.operator === "/") && (!equationData.contains("num2"))){
@@ -35,18 +37,18 @@ function handleOperatorInput(event){
         if (equationData.contains("operator")){
             backSpace();
         }
-        equationData.operator = event.target.id;
+        equationData.operator = event.target.textContent;
         display.textContent += ` ${equationData.operator} `;
     }
 }
 
 function handleNumberInput(event){
     if (!equationData.contains("operator")){
-        equationData.num1 += event.target.id; 
+        equationData.num1 += event.target.textContent; 
         display.textContent = equationData.num1;
     }else{
-        equationData.num2 += event.target.id;
-        display.textContent += event.target.id;
+        equationData.num2 += event.target.textContent;
+        display.textContent += event.target.textContent;
     }
 };
 
@@ -102,7 +104,35 @@ function addDecimal(event){
     }
 }
 
-function clear(event){
+function handleKeyboard(event){
+    const clickEvent = new MouseEvent('click');
+    const keyMap = new Map([
+        ["+", "plus"],
+        ["-", "minus"],
+        ["*", "times"],
+        ["/", "divide"],
+        [".", "decimal"],
+        ["=", "equal"],
+        ["Enter", "equal"],
+        ["%", "percent"],
+        ["Backspace", "backspace"],
+        ["Delete", "delete"]
+    ]);
+    
+    // Add numeric keys with corresponding values
+    for (let i = 0; i <= 9; i++) {
+        keyMap.set(i.toString(), `val${i}`);
+    }
+    let select = keyMap.get(event.key);
+    if (select === undefined){
+        return;
+    }else{
+        console.log(event.key);
+        document.querySelector(`#${select}`).dispatchEvent(clickEvent);
+    }    
+}
+
+function clear(){
     equationData.num1 = "";
     equationData.num2 = "";
     equationData.operator= "";
