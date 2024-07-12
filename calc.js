@@ -1,6 +1,11 @@
-let firstNumber = "";
-let secondNumber = "";
-let operator = "";
+let equationData = {
+    num1: "", 
+    num2: "", 
+    operator: "",
+    valuePresent: function(property){
+        return this[property] !== "";
+    }
+};
 
 const display = document.querySelector("#display");
 const operatorBtns = document.querySelectorAll(".operator");
@@ -8,66 +13,100 @@ const numberBtns = document.querySelectorAll(".number");
 const equalsBtn = document.querySelector("#equal");
 const percentBtn = document.querySelector("#percent");
 const clearBtn = document.querySelector("#clear");
+const deleteBtn = document.querySelector("#delete");
 
 numberBtns.forEach((button) => button.addEventListener("click", handleNumberInput));
 operatorBtns.forEach((button) => button.addEventListener("click", handleOperatorInput));
 equalsBtn.addEventListener("click", handleEquals);
 percentBtn.addEventListener("click", handlePercent);
 clearBtn.addEventListener("click", clear);
+deleteBtn.addEventListener("click", backSpace);
 
 function handleOperatorInput(event){
-    if (firstNumber !== "" && secondNumber === ""){
-        if (operator !== ""){
-            operator = event.target.id;
-            display.textContent = operator;
+    console.log(equationData);
+    if (equationData.valuePresent("num1") && !equationData.valuePresent("num2")){
+        if (equationData.valuePresent("operator")){
+            equationData.operator= event.target.id;
+            display.textContent = equationData.operator;
         }
-        operator = event.target.id;
-        display.textContent += ` ${operator} `;
+        equationData.operator= event.target.id;
+        display.textContent += ` ${equationData.operator} `;
     }
 }
 
 function handleNumberInput(event){
-    if (operator === ""){
-        firstNumber += event.target.id; 
-        display.textContent = firstNumber;
+    console.log(equationData);
+    if (!equationData.valuePresent("operator")){
+        equationData.num1 += event.target.id; 
+        display.textContent = equationData.num1;
     }else{
-        secondNumber += event.target.id;
+        equationData.num2 += event.target.id;
         display.textContent += event.target.id;
     }
 };
 
 function handleEquals(event){
-    if (firstNumber !== "" && secondNumber !== "" && operator !== ""){
-        display.textContent = operate(+firstNumber, operator, +secondNumber);
+    console.log(equationData);
+    if (equationData.valuePresent("num1") && equationData.valuePresent("num2") && equationData.valuePresent("operator")){
+        display.textContent = operate(+equationData.num1, equationData.operator, +equationData.num2);
         if (display.textContent === "ERROR"){
-            firstNumber = "";
+            equationData.num1 = "";
         }else{
-            firstNumber = display.textContent;
+            equationData.num1 = display.textContent;
         }
-        secondNumber = "";
-        operator = "";
+        equationData.num2 = "";
+        equationData.operator= "";
     }
 }
 
+function backSpace(event){
+    if (equationData.valuePresent("operator") && !equationData.valuePresent("num2")){
+        display.textContent = display.textContent.slice(0, (display.textContent.length-3)); // specifically for removing operator (when there is a number and there is an operator)
+    }else if(equationData.valuePresent("num2") && equationData.num2.split("").includes("e")){ //checks if in exponential form
+        display.textContent = display.textContent.slice(0, display.textContent.length - equationData.num2.length);
+    }else if (display.textContent === "" || (equationData.valuePresent("num1") && equationData.num1.split("").includes("e"))){
+        display.textContent = "";
+        equationData = replaceData();
+        return;
+    }else{
+        display.textContent = display.textContent.slice(0, (display.textContent.length-1));
+    };
+    equationData = replaceData(...display.textContent.split(" ").slice());
+}
+
+
 function handlePercent(event){
-    if (firstNumber !== "" && operator === ""){
-        firstNumber = String(divide(+firstNumber, 100));
-        display.textContent = firstNumber;
+    console.log(equationData);
+    if (equationData.valuePresent("num1") && !equationData.valuePresent("operator")){
+        equationData.num1 = String(divide(+equationData.num1, 100));
+        display.textContent = equationData.num1;
     }
-    if (operator !== "" && secondNumber !== ""){
-        secondNumber = String(divide(+secondNumber, 100));
-        display.textContent = display.textContent.slice(0, (firstNumber.length + 3)); //3 is the length of " [operator] "
-        display.textContent += secondNumber;
+    if (equationData.valuePresent("operator") && equationData.valuePresent("num2")){
+        equationData.num2 = String(divide(+equationData.num2, 100));
+        display.textContent = display.textContent.slice(0, (equationData.num1.length + 3)); //3 is the length of " [operator] "
+        display.textContent += equationData.num2;
         
     }
 }
 
 function clear(event){
-    firstNumber = "";
-    secondNumber = "";
-    operator = "";
+    equationData.num1 = "";
+    equationData.num2 = "";
+    equationData.operator= "";
     display.textContent = "";
 }
+
+function replaceData(a = "", b = "", c = ""){
+    return {
+        num1: a, 
+        num2: c, 
+        operator: b,
+        valuePresent: function(property){
+            return this[property] !== "";
+        }
+    };
+}
+
 
 add = function(num1, num2){
     return num1 + num2;
