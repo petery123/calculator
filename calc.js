@@ -127,7 +127,6 @@ function handleKeyboard(event){
     if (select === undefined){
         return;
     }else{
-        console.log(event.key);
         document.querySelector(`#${select}`).dispatchEvent(clickEvent);
     }    
 }
