@@ -7,11 +7,13 @@ const operatorBtns = document.querySelectorAll(".operator");
 const numberBtns = document.querySelectorAll(".number");
 const equalsBtn = document.querySelector("#equal");
 const percentBtn = document.querySelector("#percent");
+const clearBtn = document.querySelector("#clear");
 
 numberBtns.forEach((button) => button.addEventListener("click", handleNumberInput));
 operatorBtns.forEach((button) => button.addEventListener("click", handleOperatorInput));
 equalsBtn.addEventListener("click", handleEquals);
 percentBtn.addEventListener("click", handlePercent);
+clearBtn.addEventListener("click", clear);
 
 function handleOperatorInput(event){
     if (firstNumber !== "" && secondNumber === ""){
@@ -58,6 +60,13 @@ function handlePercent(event){
         display.textContent += secondNumber;
         
     }
+}
+
+function clear(event){
+    firstNumber = "";
+    secondNumber = "";
+    operator = "";
+    display.textContent = "";
 }
 
 add = function(num1, num2){
