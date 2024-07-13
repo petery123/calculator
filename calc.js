@@ -3,7 +3,7 @@ let equationData = {
     num2: "", 
     operator: "",
     contains: function(property){
-        return this[property] !== "";
+        return this[property] !== "" && this[property] !== "ERROR";
     }
 };
 
@@ -38,7 +38,7 @@ function handleOperatorInput(event){
             backSpace();
         }
         equationData.operator = event.target.textContent;
-        display.textContent += ` ${equationData.operator} `;
+        display.textContent += `\u200B${equationData.operator}\u200B`;
     }
 }
 
@@ -54,11 +54,13 @@ function handleNumberInput(event){
 
 function handleEquals(){
     if (equationData.contains("num1") && equationData.contains("num2") && equationData.contains("operator")){
-        display.textContent = operate(+equationData.num1, equationData.operator, +equationData.num2);
-        if (display.textContent === "ERROR"){
+        let answer = operate(+equationData.num1, equationData.operator, +equationData.num2)
+        if (answer === "ERROR"){
+            display.textContent = answer;
             equationData.num1 = "";
         }else{
-            equationData.num1 = display.textContent;
+            display.textContent = formatResult(answer);
+            equationData.num1 = answer;
         }
         equationData.num2 = "";
         equationData.operator= "";
@@ -77,7 +79,7 @@ function backSpace(){
     }else{
         display.textContent = display.textContent.slice(0, (display.textContent.length-1));
     };
-    equationData = replaceData(...display.textContent.split(" ").slice());
+    equationData = replaceData(...display.textContent.split("\u200B").slice());
 }
 
 
@@ -148,6 +150,13 @@ function replaceData(a = "", b = "", c = ""){
     };
 }
 
+function formatResult(result) {
+    const resultStr = result.toString();
+    if (resultStr.length > 10) {
+        return result.toPrecision(2);
+    }
+    return result;
+}
 
 add = function(num1, num2){
     return num1 + num2;

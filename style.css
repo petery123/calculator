@@ -2,6 +2,8 @@
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 body{
@@ -19,32 +21,50 @@ body{
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background-color: pink;
+    background-color: #1C2638;
 }
 
 #display{
-    height: 40px;
+    height: 50px;
     width: 100%;
-    border: 2px solid red;
+    background-color: #fffafa0a;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    font-size: 38px;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0 10px;
 }
 
 button{
     flex: 1;
+    background-color: #324053;
+    border-style: none;
+    font-size: medium;
+    font-weight: 600;
 }
 
 #equal{
-    flex: 2;
+    flex: 2.04;
+    background-color: purple;
 }
 
 .row{
     display: flex;
     flex: 1;
-    gap: 2px;
+    gap: 4px;
 }
 
 .buttons{
-    height: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
+}
+
+.operator{
+    color: purple;
+    font-size: 25px;
+    background-color: #32405380;
 }
