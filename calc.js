@@ -69,10 +69,10 @@ function handleEquals(){
 
 function backSpace(){
     if (equationData.contains("operator") && !equationData.contains("num2")){
-        display.textContent = display.textContent.slice(0, (display.textContent.length-3)); // specifically for removing operator (when there is a number and there is an operator)
+        display.textContent = display.textContent.slice(0, (display.textContent.length-3)); // specifically for removing operator (when there is first number and an operator)
     }else if(equationData.contains("num2") && equationData.num2.split("").includes("e")){ //checks if in exponential form
         display.textContent = display.textContent.slice(0, display.textContent.length - equationData.num2.length);
-    }else if (display.textContent === "" || (equationData.contains("num1") && equationData.num1.split("").includes("e"))){
+    }else if (display.textContent === "" || display.textContent === "ERROR" || (equationData.contains("num1") && String(equationData.num1).split("").includes("e"))){
         display.textContent = "";
         equationData = replaceData();
         return;
